@@ -193,6 +193,7 @@ type settingsFrame struct {
 	Datagram        bool              // HTTP Datagrams, RFC 9297
 	ExtendedConnect bool              // Extended CONNECT, RFC 9220
 	Other           map[uint64]uint64 // all settings that we don't explicitly recognize
+	OtherOrder      []uint64          // order in which to write Other settings
 }
 
 func pointer[T any](v T) *T {
@@ -283,36 +284,46 @@ func parseSettingsFrame(r *countingByteReader, l uint64, streamID quic.StreamID,
 
 func (f *settingsFrame) Append(b []byte) []byte {
 	b = quicvarint.Append(b, 0x4)
-	var l int
+
+	// Build complete settings map including special settings
+	allSettings := make(map[uint64]uint64)
 	if f.MaxFieldSectionSize >= 0 {
-		l += quicvarint.Len(settingMaxFieldSectionSize) + quicvarint.Len(uint64(f.MaxFieldSectionSize))
+		allSettings[settingMaxFieldSectionSize] = uint64(f.MaxFieldSectionSize)
+	}
+	if f.Datagram {
+		allSettings[settingDatagram] = 1
+	}
+	if f.ExtendedConnect {
+		allSettings[settingExtendedConnect] = 1
 	}
 	for id, val := range f.Other {
+		allSettings[id] = val
+	}
+
+	// Calculate total length
+	var l int
+	for id, val := range allSettings {
 		l += quicvarint.Len(id) + quicvarint.Len(val)
 	}
-	if f.Datagram {
-		l += quicvarint.Len(settingDatagram) + quicvarint.Len(1)
-	}
-	if f.ExtendedConnect {
-		l += quicvarint.Len(settingExtendedConnect) + quicvarint.Len(1)
-	}
 	b = quicvarint.Append(b, uint64(l))
-	if f.MaxFieldSectionSize >= 0 {
-		b = quicvarint.Append(b, settingMaxFieldSectionSize)
-		b = quicvarint.Append(b, uint64(f.MaxFieldSectionSize))
+
+	// Write settings in order specified by OtherOrder
+	if f.OtherOrder != nil && len(f.OtherOrder) > 0 {
+		for _, id := range f.OtherOrder {
+			if val, ok := allSettings[id]; ok {
+				b = quicvarint.Append(b, id)
+				b = quicvarint.Append(b, val)
+				delete(allSettings, id) // Mark as written
+			}
+		}
 	}
-	if f.Datagram {
-		b = quicvarint.Append(b, settingDatagram)
-		b = quicvarint.Append(b, 1)
-	}
-	if f.ExtendedConnect {
-		b = quicvarint.Append(b, settingExtendedConnect)
-		b = quicvarint.Append(b, 1)
-	}
-	for id, val := range f.Other {
+
+	// Write any remaining settings (for compatibility if OtherOrder is incomplete)
+	for id, val := range allSettings {
 		b = quicvarint.Append(b, id)
 		b = quicvarint.Append(b, val)
 	}
+
 	return b
 }
 

@@ -58,6 +58,20 @@ type ClientConn struct {
 	// It is invalid to specify any settings defined by RFC 9114 (HTTP/3) and RFC 9297 (HTTP Datagrams).
 	additionalSettings map[uint64]uint64
 
+	// Order in which to send additional settings
+	additionalSettingsOrder []uint64
+
+	// Pseudo-header order for HTTP/3 requests
+	pseudoHeaderOrder []string
+
+	// sendGreaseFrames, if true, sends GREASE frames on the HTTP/3 control stream.
+	// Chrome sends GREASE frames to maintain protocol extensibility.
+	sendGreaseFrames bool
+
+	// priorityParam specifies the PRIORITY header field value to send with requests.
+	// If 0, no PRIORITY header is sent.
+	priorityParam uint32
+
 	// maxResponseHeaderBytes specifies a limit on how many response bytes are
 	// allowed in the server's response header.
 	maxResponseHeaderBytes int
@@ -81,6 +95,10 @@ func newClientConn(
 	conn *quic.Conn,
 	enableDatagrams bool,
 	additionalSettings map[uint64]uint64,
+	additionalSettingsOrder []uint64,
+	pseudoHeaderOrder []string,
+	sendGreaseFrames bool,
+	priorityParam uint32,
 	streamHijacker func(FrameType, quic.ConnectionTracingID, *quic.Stream, error) (hijacked bool, err error),
 	uniStreamHijacker func(StreamType, quic.ConnectionTracingID, *quic.ReceiveStream, error) (hijacked bool),
 	maxResponseHeaderBytes int,
@@ -88,18 +106,27 @@ func newClientConn(
 	logger *slog.Logger,
 ) *ClientConn {
 	c := &ClientConn{
-		enableDatagrams:    enableDatagrams,
-		additionalSettings: additionalSettings,
-		disableCompression: disableCompression,
-		logger:             logger,
+		enableDatagrams:         enableDatagrams,
+		additionalSettings:      additionalSettings,
+		additionalSettingsOrder: additionalSettingsOrder,
+		pseudoHeaderOrder:       pseudoHeaderOrder,
+		sendGreaseFrames:        sendGreaseFrames,
+		priorityParam:           priorityParam,
+		disableCompression:      disableCompression,
+		logger:                  logger,
 	}
-	if maxResponseHeaderBytes <= 0 {
+	if maxResponseHeaderBytes < 0 {
+		// Negative value means don't send SETTINGS_MAX_FIELD_SECTION_SIZE
+		// But use default for receiving (to avoid abortion)
+		c.maxResponseHeaderBytes = -1
+	} else if maxResponseHeaderBytes == 0 {
+		// Zero means use default
 		c.maxResponseHeaderBytes = defaultMaxResponseHeaderBytes
 	} else {
 		c.maxResponseHeaderBytes = maxResponseHeaderBytes
 	}
 	c.decoder = qpack.NewDecoder()
-	c.requestWriter = newRequestWriter()
+	c.requestWriter = newRequestWriterWithPseudoHeaderOrder(c.pseudoHeaderOrder, c.priorityParam)
 	c.conn = newConnection(
 		conn.Context(),
 		conn,
@@ -141,6 +168,7 @@ func (c *ClientConn) setupConn() error {
 	b = (&settingsFrame{
 		Datagram:            c.enableDatagrams,
 		Other:               c.additionalSettings,
+		OtherOrder:          c.additionalSettingsOrder,
 		MaxFieldSectionSize: int64(c.maxResponseHeaderBytes),
 	}).Append(b)
 	if c.conn.qlogger != nil {
@@ -157,8 +185,81 @@ func (c *ClientConn) setupConn() error {
 			Frame:    qlog.Frame{Frame: sf},
 		})
 	}
+
+	// Send PRIORITY_UPDATE frame if priorityParam is set (Chrome behavior)
+	// Chrome sends priority information on the control stream
+	// Must be sent BEFORE GREASE frames
+	if c.priorityParam > 0 {
+		if c.logger != nil {
+			c.logger.Debug("Sending PRIORITY_UPDATE frame", "priorityParam", c.priorityParam)
+		}
+		b = appendPriorityUpdateFrame(b, c.priorityParam)
+	} else if c.logger != nil {
+		c.logger.Debug("NOT sending PRIORITY_UPDATE frame", "priorityParam", c.priorityParam)
+	}
+
+	// Send GREASE frames if enabled (Chrome behavior)
+	if c.sendGreaseFrames {
+		b = appendGreaseFrame(b)
+	}
+
 	_, err = str.Write(b)
 	return err
+}
+
+// appendGreaseFrame appends a GREASE frame to the buffer.
+// GREASE frames help maintain protocol extensibility by sending unknown frame types.
+// Chrome sends GREASE frames on the control stream after SETTINGS.
+func appendGreaseFrame(b []byte) []byte {
+	// Generate GREASE frame type: 0x1f * N + 0x21
+	// Chrome uses large N values (1-10 billion range)
+	greaseFrameType := generateGREASEFrameType()
+
+	// Append frame type
+	b = quicvarint.Append(b, greaseFrameType)
+
+	// Append frame length (0 for empty payload, which is common)
+	b = quicvarint.Append(b, 0)
+
+	return b
+}
+
+// generateGREASEFrameType generates a GREASE frame type.
+// GREASE frame types are of the form 0x1f * N + 0x21 where N is a large random number.
+func generateGREASEFrameType() uint64 {
+	// Chrome uses N in range 1-10 billion
+	// This produces frame types like 31000000033, 62000000033, etc.
+	n := uint64(1000000000)
+	return 0x1f*n + 0x21
+}
+
+// appendPriorityUpdateFrame appends a PRIORITY_UPDATE frame to the buffer.
+// Chrome sends priority information on the control stream.
+// Frame type 0xF0800 (984832) with priority "u=0, i" for request streams.
+func appendPriorityUpdateFrame(b []byte, priorityParam uint32) []byte {
+	// Frame type: 0xF0800 (984832) for Chrome
+	frameType := uint64(priorityParam)
+
+	// Build payload: prioritized_stream_id + priority_field_value
+	priorityPayload := make([]byte, 0, 16)
+
+	// Prioritized Element ID: first client-initiated bidirectional stream is always 0
+	// (subsequent streams: 4, 8, 12, ...)
+	priorityPayload = quicvarint.Append(priorityPayload, 0)
+
+	// Priority Field Value: "u=0, i" as ASCII bytes
+	priorityPayload = append(priorityPayload, []byte("u=0, i")...)
+
+	// Append frame type
+	b = quicvarint.Append(b, frameType)
+
+	// Append frame length
+	b = quicvarint.Append(b, uint64(len(priorityPayload)))
+
+	// Append payload
+	b = append(b, priorityPayload...)
+
+	return b
 }
 
 func (c *ClientConn) handleBidirectionalStreams(streamHijacker func(FrameType, quic.ConnectionTracingID, *quic.Stream, error) (hijacked bool, err error)) {

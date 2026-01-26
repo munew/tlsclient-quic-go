@@ -70,9 +70,12 @@ func parseHeaders(decodeFn qpack.DecodeFunc, isRequest bool, sizeLimit int, head
 		// RFC 9114, section 4.2.2:
 		// The size of a field list is calculated based on the uncompressed size of fields,
 		// including the length of the name and value in bytes plus an overhead of 32 bytes for each field.
-		sizeLimit -= len(h.Name) + len(h.Value) + 32
-		if sizeLimit < 0 {
-			return header{}, errHeaderTooLarge
+		// If sizeLimit is negative, don't enforce limit (used when not sending SETTINGS_MAX_FIELD_SECTION_SIZE)
+		if sizeLimit >= 0 {
+			sizeLimit -= len(h.Name) + len(h.Value) + 32
+			if sizeLimit < 0 {
+				return header{}, errHeaderTooLarge
+			}
 		}
 		// field names need to be lowercase, see section 4.2 of RFC 9114
 		if strings.ToLower(h.Name) != h.Name {

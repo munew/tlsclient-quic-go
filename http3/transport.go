@@ -86,9 +86,28 @@ type Transport struct {
 	// It is invalid to specify any settings defined by RFC 9114 (HTTP/3) and RFC 9297 (HTTP Datagrams).
 	AdditionalSettings map[uint64]uint64
 
+	// AdditionalSettingsOrder specifies the order in which to send AdditionalSettings.
+	// If nil or empty, settings will be sent in random map iteration order.
+	AdditionalSettingsOrder []uint64
+
+	// PseudoHeaderOrder specifies the order in which to send pseudo-headers in HTTP/3 requests.
+	// If nil or empty, defaults to Chrome-like order: :method, :authority, :scheme, :path
+	PseudoHeaderOrder []string
+
+	// SendGreaseFrames, if true, sends GREASE frames on the HTTP/3 control stream.
+	// Chrome sends GREASE frames to maintain protocol extensibility.
+	SendGreaseFrames bool
+
+	// PriorityParam specifies the PRIORITY header field value to send with requests.
+	// Chrome sends this value in HTTP/3 requests to indicate request priority.
+	// If 0, no PRIORITY header is sent.
+	// Example: Chrome 133 uses 984832
+	PriorityParam uint32
+
 	// MaxResponseHeaderBytes specifies a limit on how many response bytes are
 	// allowed in the server's response header.
 	// Zero means to use a default limit.
+	// Set to -1 to disable sending SETTINGS_MAX_FIELD_SECTION_SIZE.
 	MaxResponseHeaderBytes int
 
 	// DisableCompression, if true, prevents the Transport from requesting compression with an
@@ -134,6 +153,10 @@ func (t *Transport) init() error {
 				conn,
 				t.EnableDatagrams,
 				t.AdditionalSettings,
+				t.AdditionalSettingsOrder,
+				t.PseudoHeaderOrder,
+				t.SendGreaseFrames,
+				t.PriorityParam,
 				t.StreamHijacker,
 				t.UniStreamHijacker,
 				t.MaxResponseHeaderBytes,
@@ -438,6 +461,10 @@ func (t *Transport) NewClientConn(conn *quic.Conn) *ClientConn {
 		conn,
 		t.EnableDatagrams,
 		t.AdditionalSettings,
+		t.AdditionalSettingsOrder,
+		t.PseudoHeaderOrder,
+		t.SendGreaseFrames,
+		t.PriorityParam,
 		t.StreamHijacker,
 		t.UniStreamHijacker,
 		t.MaxResponseHeaderBytes,

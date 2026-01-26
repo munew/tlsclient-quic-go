@@ -26,9 +26,11 @@ import (
 const bodyCopyBufferSize = 8 * 1024
 
 type requestWriter struct {
-	mutex     sync.Mutex
-	encoder   *qpack.Encoder
-	headerBuf *bytes.Buffer
+	mutex              sync.Mutex
+	encoder            *qpack.Encoder
+	headerBuf          *bytes.Buffer
+	pseudoHeaderOrder  []string
+	priorityParam      uint32
 }
 
 func newRequestWriter() *requestWriter {
@@ -37,6 +39,24 @@ func newRequestWriter() *requestWriter {
 	return &requestWriter{
 		encoder:   encoder,
 		headerBuf: headerBuf,
+		// Default Chrome-like order: method, authority, scheme, path
+		pseudoHeaderOrder: []string{":method", ":authority", ":scheme", ":path"},
+	}
+}
+
+func newRequestWriterWithPseudoHeaderOrder(pseudoHeaderOrder []string, priorityParam uint32) *requestWriter {
+	headerBuf := &bytes.Buffer{}
+	encoder := qpack.NewEncoder(headerBuf)
+	order := pseudoHeaderOrder
+	if order == nil || len(order) == 0 {
+		// Default Chrome-like order: method, authority, scheme, path
+		order = []string{":method", ":authority", ":scheme", ":path"}
+	}
+	return &requestWriter{
+		encoder:           encoder,
+		headerBuf:         headerBuf,
+		pseudoHeaderOrder: order,
+		priorityParam:     priorityParam,
 	}
 }
 
@@ -139,19 +159,39 @@ func (w *requestWriter) encodeHeaders(req *http.Request, addGzipHeader bool, tra
 
 	enumerateHeaders := func(f func(name, value string)) {
 		// 8.1.2.3 Request Pseudo-Header Fields
-		// The :path pseudo-header field includes the path and query parts of the
-		// target URI (the path-absolute production and optionally a '?' character
-		// followed by the query production (see Sections 3.3 and 3.4 of
-		// [RFC3986]).
-		f(":authority", host)
-		f(":method", req.Method)
+		// Send pseudo-headers in the configured order
+		pseudoHeaders := map[string]string{
+			":authority": host,
+			":method":    req.Method,
+		}
 		if req.Method != http.MethodConnect || isExtendedConnect {
-			f(":path", path)
-			f(":scheme", req.URL.Scheme)
+			pseudoHeaders[":path"] = path
+			pseudoHeaders[":scheme"] = req.URL.Scheme
 		}
 		if isExtendedConnect {
-			f(":protocol", req.Proto)
+			pseudoHeaders[":protocol"] = req.Proto
 		}
+
+		// Write pseudo-headers in the configured order
+		for _, name := range w.pseudoHeaderOrder {
+			if value, ok := pseudoHeaders[name]; ok {
+				f(name, value)
+				delete(pseudoHeaders, name) // Mark as written
+			}
+		}
+		// Write any remaining pseudo-headers (e.g., :protocol for extended CONNECT)
+		for name, value := range pseudoHeaders {
+			f(name, value)
+		}
+
+		// Add priority header if priorityParam is set (RFC 9218)
+		// Chrome sends priority as "u=0, i" for highest priority documents
+		// NOT "u=984832" - that was a misunderstanding
+		if w.priorityParam > 0 {
+			// Send standard Chrome priority format
+			f("priority", "u=0, i")
+		}
+
 		if trailers != "" {
 			f("trailer", trailers)
 		}
