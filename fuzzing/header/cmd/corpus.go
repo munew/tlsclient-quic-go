@@ -5,10 +5,10 @@ import (
 	"log"
 	mrand "math/rand/v2"
 
-	"github.com/bogdanfinn/quic-go-utls/fuzzing/header"
-	"github.com/bogdanfinn/quic-go-utls/fuzzing/internal/helper"
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
+	"github.com/munew/tlsclient-quic-go/fuzzing/header"
+	"github.com/munew/tlsclient-quic-go/fuzzing/internal/helper"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
 )
 
 const version = protocol.Version1

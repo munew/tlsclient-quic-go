@@ -9,7 +9,7 @@ import (
 
 	tls "github.com/bogdanfinn/utls"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/testdata"
+	"github.com/munew/tlsclient-quic-go/internal/testdata"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

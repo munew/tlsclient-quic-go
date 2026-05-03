@@ -8,10 +8,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/internal/qerr"
-	"github.com/bogdanfinn/quic-go-utls/internal/synctest"
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/qerr"
+	"github.com/munew/tlsclient-quic-go/internal/synctest"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -4,12 +4,12 @@ import (
 	"crypto/rand"
 	"testing"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/handshake"
-	"github.com/bogdanfinn/quic-go-utls/internal/mocks"
-	"github.com/bogdanfinn/quic-go-utls/internal/monotime"
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/internal/qerr"
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
+	"github.com/munew/tlsclient-quic-go/internal/handshake"
+	"github.com/munew/tlsclient-quic-go/internal/mocks"
+	"github.com/munew/tlsclient-quic-go/internal/monotime"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/qerr"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
 
 	"github.com/stretchr/testify/require"
 	"go.uber.org/mock/gomock"

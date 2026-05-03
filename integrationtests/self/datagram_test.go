@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/internal/synctest"
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
-	"github.com/bogdanfinn/quic-go-utls/testutils/simnet"
+	"github.com/munew/tlsclient-quic-go/internal/synctest"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
+	"github.com/munew/tlsclient-quic-go/testutils/simnet"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

@@ -9,10 +9,10 @@ import (
 	"time"
 
 	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/http3/qlog"
-	"github.com/bogdanfinn/quic-go-utls/qlogwriter"
-	"github.com/bogdanfinn/quic-go-utls/quicvarint"
-	"github.com/bogdanfinn/quic-go-utls/testutils/events"
+	"github.com/munew/tlsclient-quic-go/http3/qlog"
+	"github.com/munew/tlsclient-quic-go/qlogwriter"
+	"github.com/munew/tlsclient-quic-go/quicvarint"
+	"github.com/munew/tlsclient-quic-go/testutils/events"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

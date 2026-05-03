@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
-	http "github.com/bogdanfinn/fhttp"
-
 	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/http3"
+	http "github.com/munew/tlsclient-fhttp"
+
+	"github.com/munew/tlsclient-quic-go/http3"
 	"github.com/stretchr/testify/require"
 )
 

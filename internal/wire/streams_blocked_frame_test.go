@@ -5,8 +5,8 @@ import (
 	"io"
 	"testing"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/quicvarint"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/quicvarint"
 
 	"github.com/stretchr/testify/require"
 )

@@ -1,9 +1,9 @@
 package ackhandler
 
 import (
-	"github.com/bogdanfinn/quic-go-utls/internal/monotime"
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
+	"github.com/munew/tlsclient-quic-go/internal/monotime"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
 )
 
 // SentPacketHandler handles ACKs received for outgoing packets

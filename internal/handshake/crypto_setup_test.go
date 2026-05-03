@@ -14,11 +14,11 @@ import (
 
 	tls "github.com/bogdanfinn/utls"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/internal/qerr"
-	"github.com/bogdanfinn/quic-go-utls/internal/testdata"
-	"github.com/bogdanfinn/quic-go-utls/internal/utils"
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/qerr"
+	"github.com/munew/tlsclient-quic-go/internal/testdata"
+	"github.com/munew/tlsclient-quic-go/internal/utils"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
 
 	"github.com/stretchr/testify/require"
 )

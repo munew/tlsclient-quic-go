@@ -1,8 +1,8 @@
 package ackhandler
 
 import (
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/internal/utils"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/utils"
 )
 
 type packetNumberGenerator interface {

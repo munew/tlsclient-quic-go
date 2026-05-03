@@ -5,8 +5,8 @@ import (
 	"errors"
 	"fmt"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
-	"github.com/bogdanfinn/quic-go-utls/quicvarint"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
+	"github.com/munew/tlsclient-quic-go/quicvarint"
 )
 
 const sessionTicketRevision = 5

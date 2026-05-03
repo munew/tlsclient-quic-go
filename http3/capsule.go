@@ -3,7 +3,7 @@ package http3
 import (
 	"io"
 
-	"github.com/bogdanfinn/quic-go-utls/quicvarint"
+	"github.com/munew/tlsclient-quic-go/quicvarint"
 )
 
 // CapsuleType is the type of the capsule

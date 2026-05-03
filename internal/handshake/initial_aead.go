@@ -7,7 +7,7 @@ import (
 
 	"golang.org/x/crypto/hkdf"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
 )
 
 var (

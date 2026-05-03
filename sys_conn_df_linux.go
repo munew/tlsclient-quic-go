@@ -8,7 +8,7 @@ import (
 
 	"golang.org/x/sys/unix"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/utils"
+	"github.com/munew/tlsclient-quic-go/internal/utils"
 )
 
 func setDF(rawConn syscall.RawConn) (bool, error) {

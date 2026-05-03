@@ -5,11 +5,11 @@ import (
 	"io"
 	"testing"
 
-	http "github.com/bogdanfinn/fhttp"
-
 	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/http3/qlog"
-	"github.com/bogdanfinn/quic-go-utls/testutils/events"
+	http "github.com/munew/tlsclient-fhttp"
+
+	"github.com/munew/tlsclient-quic-go/http3/qlog"
+	"github.com/munew/tlsclient-quic-go/testutils/events"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

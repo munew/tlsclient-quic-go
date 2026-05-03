@@ -10,27 +10,27 @@ import (
 	"strings"
 	"sync"
 
-	http "github.com/bogdanfinn/fhttp"
-	"github.com/bogdanfinn/fhttp/httptrace"
+	"github.com/bogdanfinn/quic-go-utls"
+	http "github.com/munew/tlsclient-fhttp"
+	"github.com/munew/tlsclient-fhttp/httptrace"
 
 	"golang.org/x/net/http/httpguts"
 	"golang.org/x/net/http2/hpack"
 	"golang.org/x/net/idna"
 
-	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/http3/qlog"
-	"github.com/bogdanfinn/quic-go-utls/qlogwriter"
+	"github.com/munew/tlsclient-quic-go/http3/qlog"
+	"github.com/munew/tlsclient-quic-go/qlogwriter"
 	"github.com/quic-go/qpack"
 )
 
 const bodyCopyBufferSize = 8 * 1024
 
 type requestWriter struct {
-	mutex              sync.Mutex
-	encoder            *qpack.Encoder
-	headerBuf          *bytes.Buffer
-	pseudoHeaderOrder  []string
-	priorityParam      uint32
+	mutex             sync.Mutex
+	encoder           *qpack.Encoder
+	headerBuf         *bytes.Buffer
+	pseudoHeaderOrder []string
+	priorityParam     uint32
 }
 
 func newRequestWriter() *requestWriter {
@@ -147,7 +147,7 @@ func (w *requestWriter) encodeHeaders(req *http.Request, addGzipHeader bool, tra
 			if k == http.HeaderOrderKey || k == http.PHeaderOrderKey {
 				continue
 			}
-			
+
 			return nil, fmt.Errorf("invalid HTTP header name %q", k)
 		}
 		for _, v := range vv {

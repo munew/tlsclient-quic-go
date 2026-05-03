@@ -8,8 +8,8 @@ import (
 	"time"
 
 	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/internal/synctest"
-	"github.com/bogdanfinn/quic-go-utls/qlogwriter"
+	"github.com/munew/tlsclient-quic-go/internal/synctest"
+	"github.com/munew/tlsclient-quic-go/qlogwriter"
 
 	"github.com/stretchr/testify/require"
 )

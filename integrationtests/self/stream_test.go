@@ -8,10 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
-
 	"golang.org/x/sync/errgroup"
 
+	"github.com/bogdanfinn/quic-go-utls"
 	"github.com/stretchr/testify/require"
 )
 

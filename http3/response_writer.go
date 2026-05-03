@@ -9,9 +9,9 @@ import (
 	"strings"
 	"time"
 
-	http "github.com/bogdanfinn/fhttp"
+	http "github.com/munew/tlsclient-fhttp"
 
-	"github.com/bogdanfinn/quic-go-utls/http3/qlog"
+	"github.com/munew/tlsclient-quic-go/http3/qlog"
 	"github.com/quic-go/qpack"
 
 	"golang.org/x/net/http/httpguts"

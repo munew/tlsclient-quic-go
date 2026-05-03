@@ -7,10 +7,10 @@ import (
 	"testing"
 	"time"
 
+	"github.com/bogdanfinn/quic-go-utls"
 	tls "github.com/bogdanfinn/utls"
 
-	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/qlogwriter"
+	"github.com/munew/tlsclient-quic-go/qlogwriter"
 
 	"github.com/stretchr/testify/require"
 )

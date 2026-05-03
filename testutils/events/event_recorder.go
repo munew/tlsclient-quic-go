@@ -6,7 +6,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls/qlogwriter"
+	"github.com/munew/tlsclient-quic-go/qlogwriter"
 )
 
 // Event is a recorded event with the event time.

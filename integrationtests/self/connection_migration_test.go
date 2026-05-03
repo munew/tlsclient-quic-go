@@ -11,8 +11,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
-	quicproxy "github.com/bogdanfinn/quic-go-utls/integrationtests/tools/proxy"
+	quic "github.com/munew/tlsclient-quic-go"
+	quicproxy "github.com/munew/tlsclient-quic-go/integrationtests/tools/proxy"
 
 	"github.com/stretchr/testify/require"
 )

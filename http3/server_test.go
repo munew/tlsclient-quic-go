@@ -11,16 +11,16 @@ import (
 	"testing"
 	"time"
 
-	http "github.com/bogdanfinn/fhttp"
-	"github.com/bogdanfinn/fhttp/httptest"
-	tls "github.com/bogdanfinn/utls"
-
 	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/http3/internal/testdata"
-	"github.com/bogdanfinn/quic-go-utls/http3/qlog"
-	"github.com/bogdanfinn/quic-go-utls/qlogwriter"
-	"github.com/bogdanfinn/quic-go-utls/quicvarint"
-	"github.com/bogdanfinn/quic-go-utls/testutils/events"
+	tls "github.com/bogdanfinn/utls"
+	http "github.com/munew/tlsclient-fhttp"
+	"github.com/munew/tlsclient-fhttp/httptest"
+
+	"github.com/munew/tlsclient-quic-go/http3/internal/testdata"
+	"github.com/munew/tlsclient-quic-go/http3/qlog"
+	"github.com/munew/tlsclient-quic-go/qlogwriter"
+	"github.com/munew/tlsclient-quic-go/quicvarint"
+	"github.com/munew/tlsclient-quic-go/testutils/events"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"

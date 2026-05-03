@@ -6,11 +6,11 @@ import (
 	"testing"
 	"time"
 
+	"github.com/bogdanfinn/quic-go-utls"
 	tls "github.com/bogdanfinn/utls"
 
-	"github.com/bogdanfinn/quic-go-utls"
-	"github.com/bogdanfinn/quic-go-utls/internal/synctest"
-	"github.com/bogdanfinn/quic-go-utls/testutils/simnet"
+	"github.com/munew/tlsclient-quic-go/internal/synctest"
+	"github.com/munew/tlsclient-quic-go/testutils/simnet"
 
 	"github.com/stretchr/testify/require"
 )

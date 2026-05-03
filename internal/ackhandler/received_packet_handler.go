@@ -3,10 +3,10 @@ package ackhandler
 import (
 	"fmt"
 
-	"github.com/bogdanfinn/quic-go-utls/internal/monotime"
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
-	"github.com/bogdanfinn/quic-go-utls/internal/utils"
-	"github.com/bogdanfinn/quic-go-utls/internal/wire"
+	"github.com/munew/tlsclient-quic-go/internal/monotime"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
+	"github.com/munew/tlsclient-quic-go/internal/utils"
+	"github.com/munew/tlsclient-quic-go/internal/wire"
 )
 
 type ReceivedPacketHandler struct {

@@ -12,7 +12,7 @@ import (
 
 	tls "github.com/bogdanfinn/utls"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	quic "github.com/munew/tlsclient-quic-go"
 )
 
 const addr = "localhost:4242"

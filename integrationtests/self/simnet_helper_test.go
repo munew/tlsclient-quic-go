@@ -5,7 +5,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls/testutils/simnet"
+	"github.com/munew/tlsclient-quic-go/testutils/simnet"
 
 	"github.com/stretchr/testify/require"
 )

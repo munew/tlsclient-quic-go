@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/bogdanfinn/quic-go-utls"
-	quicproxy "github.com/bogdanfinn/quic-go-utls/integrationtests/tools/proxy"
-	"github.com/bogdanfinn/quic-go-utls/internal/protocol"
+	quicproxy "github.com/munew/tlsclient-quic-go/integrationtests/tools/proxy"
+	"github.com/munew/tlsclient-quic-go/internal/protocol"
 
 	"github.com/stretchr/testify/require"
 )
