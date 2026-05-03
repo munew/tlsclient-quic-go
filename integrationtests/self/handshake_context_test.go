@@ -7,9 +7,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	tls "github.com/bogdanfinn/utls"
 
+	quic "github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/qlogwriter"
 
 	"github.com/stretchr/testify/require"

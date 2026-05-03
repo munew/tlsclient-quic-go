@@ -7,7 +7,7 @@ import (
 	"io"
 	"maps"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	quic "github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/http3/qlog"
 	"github.com/munew/tlsclient-quic-go/qlogwriter"
 	"github.com/munew/tlsclient-quic-go/quicvarint"

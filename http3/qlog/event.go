@@ -3,7 +3,7 @@ package qlog
 import (
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	"github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/qlogwriter/jsontext"
 )
 

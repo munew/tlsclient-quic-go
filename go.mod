@@ -3,7 +3,7 @@ module github.com/munew/tlsclient-quic-go
 go 1.24.1
 
 require (
-	github.com/bogdanfinn/quic-go-utls v1.0.9-utls
+	github.com/munew/tlsclient-quic-go v1.0.9-utls
 	github.com/bogdanfinn/utls v1.7.7-barnius
 	github.com/munew/tlsclient-fhttp v0.0.0-20260503172852-2dfa404dd28d
 	github.com/quic-go/qpack v0.6.0

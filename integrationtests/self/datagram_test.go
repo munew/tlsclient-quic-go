@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	quic "github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/internal/synctest"
 	"github.com/munew/tlsclient-quic-go/internal/wire"
 	"github.com/munew/tlsclient-quic-go/testutils/simnet"

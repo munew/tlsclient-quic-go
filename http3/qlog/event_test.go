@@ -7,7 +7,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	"github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/internal/synctest"
 	"github.com/munew/tlsclient-quic-go/qlogwriter"
 

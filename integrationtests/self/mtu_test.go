@@ -10,7 +10,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	quic "github.com/munew/tlsclient-quic-go"
 	quicproxy "github.com/munew/tlsclient-quic-go/integrationtests/tools/proxy"
 	"github.com/munew/tlsclient-quic-go/internal/protocol"
 	"github.com/munew/tlsclient-quic-go/qlog"

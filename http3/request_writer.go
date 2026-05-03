@@ -10,9 +10,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	http "github.com/munew/tlsclient-fhttp"
 	"github.com/munew/tlsclient-fhttp/httptrace"
+	quic "github.com/munew/tlsclient-quic-go"
 
 	"golang.org/x/net/http/httpguts"
 	"golang.org/x/net/http2/hpack"

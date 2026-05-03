@@ -15,9 +15,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	tls "github.com/bogdanfinn/utls"
 
+	quic "github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/internal/synctest"
 	"github.com/munew/tlsclient-quic-go/testutils/simnet"
 

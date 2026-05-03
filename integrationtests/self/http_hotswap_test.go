@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	http "github.com/munew/tlsclient-fhttp"
+	quic "github.com/munew/tlsclient-quic-go"
 
 	"github.com/munew/tlsclient-quic-go/http3"
 	"github.com/stretchr/testify/require"

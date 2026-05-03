@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	"github.com/munew/tlsclient-quic-go"
 	"github.com/stretchr/testify/require"
 )
 

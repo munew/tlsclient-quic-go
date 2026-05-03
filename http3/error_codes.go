@@ -3,7 +3,7 @@ package http3
 import (
 	"fmt"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	quic "github.com/munew/tlsclient-quic-go"
 )
 
 type ErrCode quic.ApplicationErrorCode

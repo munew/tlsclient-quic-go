@@ -6,7 +6,7 @@ import (
 	"path/filepath"
 	"testing"
 
-	"github.com/bogdanfinn/quic-go-utls"
+	"github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/qlog"
 	"github.com/stretchr/testify/require"
 )

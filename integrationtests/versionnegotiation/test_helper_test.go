@@ -6,9 +6,9 @@ import (
 	"flag"
 	"os"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	tls "github.com/bogdanfinn/utls"
 
+	quic "github.com/munew/tlsclient-quic-go"
 	"github.com/munew/tlsclient-quic-go/integrationtests/tools"
 	"github.com/munew/tlsclient-quic-go/qlogwriter"
 )

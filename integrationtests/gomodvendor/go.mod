@@ -8,7 +8,7 @@ require github.com/munew/tlsclient-quic-go v1.0.9-utls
 
 require (
 	github.com/andybalholm/brotli v1.2.0 // indirect
-	github.com/bogdanfinn/quic-go-utls v1.0.9-utls // indirect
+	github.com/munew/tlsclient-quic-go v1.0.9-utls // indirect
 	github.com/bogdanfinn/utls v1.7.7-barnius // indirect
 	github.com/klauspost/compress v1.18.2 // indirect
 	github.com/munew/tlsclient-fhttp v0.0.0-20260503172852-2dfa404dd28d // indirect

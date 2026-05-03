@@ -7,9 +7,9 @@ import (
 	"io"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	http "github.com/munew/tlsclient-fhttp"
 	"github.com/munew/tlsclient-fhttp/httptrace"
+	quic "github.com/munew/tlsclient-quic-go"
 
 	"github.com/munew/tlsclient-quic-go/http3/qlog"
 	"github.com/munew/tlsclient-quic-go/qlogwriter"

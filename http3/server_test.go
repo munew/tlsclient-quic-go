@@ -11,10 +11,10 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	tls "github.com/bogdanfinn/utls"
 	http "github.com/munew/tlsclient-fhttp"
 	"github.com/munew/tlsclient-fhttp/httptest"
+	quic "github.com/munew/tlsclient-quic-go"
 
 	"github.com/munew/tlsclient-quic-go/http3/internal/testdata"
 	"github.com/munew/tlsclient-quic-go/http3/qlog"

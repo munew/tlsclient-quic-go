@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/bogdanfinn/quic-go-utls"
 	tls "github.com/bogdanfinn/utls"
 	http "github.com/munew/tlsclient-fhttp"
+	quic "github.com/munew/tlsclient-quic-go"
 
 	"github.com/munew/tlsclient-quic-go/http3"
 	quicproxy "github.com/munew/tlsclient-quic-go/integrationtests/tools/proxy"
